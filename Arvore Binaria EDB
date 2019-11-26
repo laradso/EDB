@@ -1,0 +1,71 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+typedef struct arvore{
+    int num;
+    struct arvore* sad;
+    struct arvore* sae;
+} Arvore;
+
+Arvore* createArvore(){
+    return NULL;
+}
+
+int arvoreIsEmpty(Arvore* t){
+    return t == NULL;
+}
+
+void showArvore(Arvore* t){
+    printf("<");
+    if(!arvoreIsEmpty(t)){
+        printf("%d ", t->num);
+        showArvore(t->sae);
+        showArvore(t->sad);
+    }
+    printf(">");
+}
+
+void insertArvore(Arvore** t, int num){
+    if(*t == NULL){
+        *t = (Arvore*)malloc(sizeof(Arvore));
+        (*t)->sae = NULL;
+        (*t)->sad = NULL;
+        (*t)->num = num;
+    }else{
+        if(num < (*t)->num){
+            insertArvore(&(*t)->sae, num);
+        }
+        if(num > (*t)->num){
+            insertArvore(&(*t)->sad, num);
+        }
+    }
+}
+
+int isInArvore(Arvore* t, int num){
+    if(arvoreIsEmpty(t)){
+        return 0;
+    }
+    return t->num==num || isInArvore(t->sae, num) || isInArvore(t->sad, num);
+}
+
+int main(){
+    Arvore* t = createArvore();
+    for(i=1;i<=12;i++){
+        insertArvore(&t, i);
+    }
+    showArvore(t);
+    if(arvoreIsEmpty(t)){
+        printf("\n\nArvore vazia!!\n");
+    }else{
+        printf("\n\nArvore NAO vazia!!\n");
+    }
+    for(i=1;i<=12;i++){
+        if(isInArvore(t,i)){
+            printf("\nO numero %d pertence a arvore!\n\n", i);
+        }else{
+            printf("\nO numero %d NAO pertence a arvore!\n\n", i);
+        }
+    }
+    free(t);
+    return 0;
+}
